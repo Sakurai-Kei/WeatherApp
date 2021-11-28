@@ -1,0 +1,38 @@
+{
+  "name": "weatherapp",
+  "version": "1.0.0",
+  "description": "Project WeatherApp for TOP Javascript course",
+  "private": true,
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack",
+    "watch": "webpack --watch",
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "**/*": "prettier --write --ignore-unknown"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Sakurai-Kei/WeatherApp.git"
+  },
+  "author": "sakurai-kei",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Sakurai-Kei/WeatherApp/issues"
+  },
+  "homepage": "https://github.com/Sakurai-Kei/WeatherApp#readme",
+  "devDependencies": {
+    "css-loader": "^6.5.1",
+    "eslint": "^8.3.0",
+    "eslint-config-airbnb-base": "^15.0.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.3",
+    "husky": "^7.0.4",
+    "lint-staged": "^12.1.2",
+    "prettier": "2.5.0",
+    "style-loader": "^3.3.1",
+    "webpack": "^5.64.4",
+    "webpack-cli": "^4.9.1"
+  }
+}
