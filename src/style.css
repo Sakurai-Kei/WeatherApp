@@ -23,6 +23,11 @@ body {
   padding-left: 5vw;
 }
 
+#weatherIcon {
+  height: 20vh;
+  width: 20vh;
+}
+
 #locationInput {
   width: 10vw;
 }

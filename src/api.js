@@ -1,5 +1,5 @@
 function getCityName() {
-  const cityName = "London"; // Get from DOM
+  const cityName = document.getElementById("locationInput").value; // Get from DOM
   return cityName;
 }
 
