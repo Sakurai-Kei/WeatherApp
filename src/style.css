@@ -34,48 +34,19 @@ body {
 
 .middle {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   width: 33vw;
-  align-items: center;
-  padding-top: 20vh;
-}
-
-#slideshow {
-  display: flex;
-  gap: 0.25vw;
-  justify-content: space-evenly;
-  width: 100%;
-  position: relative;
+  height: 30vh;
+  justify-content: space-between;
+  gap: 1vw;
 }
 
 .daily {
-  display: none;
-}
-
-.dailyActive {
   display: flex;
   flex-direction: column;
-}
-
-#previous,
-#next {
-  height: 5vh;
-}
-
-.dot {
-  display: inline-block;
-  cursor: pointer;
-  height: 2vh;
-  width: 2vh;
-  margin: 1vh 0.25vw;
-  background-color: #bbb;
-  border-radius: 50%;
-  transition: background-color 0.6s ease;
-}
-
-.active,
-.dot:hover {
-  background-color: #717171;
+  gap: 1vh;
+  width: 6vw;
+  height: 10vh;
 }
 
 .right {
@@ -88,6 +59,8 @@ body {
 
 #footer {
   display: flex;
+  flex-direction: column;
   margin-top: auto;
   justify-content: center;
+  align-items: center;
 }

@@ -1,7 +1,8 @@
+/* eslint-disable no-param-reassign */
 import { format } from "date-fns";
 import getWeather from "./api";
 
-function mainDOM(location, weather, icon, temp) {
+function mainDOM(location, weather, unix, icon, temp) {
   const locationElement = document.getElementById("location");
   const weatherElement = document.getElementById("weather");
   const dateElement = document.getElementById("date");
@@ -10,17 +11,30 @@ function mainDOM(location, weather, icon, temp) {
 
   locationElement.textContent = location;
   weatherElement.textContent = weather;
-  dateElement.textContent = format(new Date(), "PPPppp");
+  dateElement.textContent = format(new Date(unix * 1000), "PPPPpppp");
   iconElement.setAttribute(
     "src",
     `http://openweathermap.org/img/wn/${icon}@4x.png`
   );
-  tempElement.textContent = temp;
+  tempElement.textContent = `${Math.round((temp - 273.15) * 100) / 100} °C`;
 }
 
-// function dailyDOM() {
-// It's Where it would display daily data, IF I COULD AFFORD IT
-// }
+function dailyDOM(data) {
+  const dailyData = data;
+  const dailyElement = Array.from(document.querySelectorAll(".daily"));
+  let i = 1;
+  dailyElement.forEach((element) => {
+    element.children[0].textContent = format(
+      new Date(dailyData.daily[i].dt * 1000),
+      "EEEE"
+    );
+    element.children[1].textContent = `${
+      Math.round((dailyData.daily[i].temp.day - 273.15) * 100) / 100
+    } °C`;
+    element.children[2].textContent = `${dailyData.daily[i].weather[0].main}`;
+    i += 1;
+  });
+}
 
 function advancedDOM(temp, pressure, humidity, windSpeed) {
   const tempFLElement = document.getElementById("feelsLike");
@@ -28,34 +42,39 @@ function advancedDOM(temp, pressure, humidity, windSpeed) {
   const humidityElement = document.getElementById("humidity");
   const windSpeedElement = document.getElementById("windSpeed");
 
-  tempFLElement.textContent = `Feels Like\n${temp}`;
-  pressureElement.textContent = `Pressure\n${pressure}`;
-  humidityElement.textContent = `Humidity\n${humidity}`;
-  windSpeedElement.textContent = `Wind Speed\n${windSpeed}`;
+  tempFLElement.textContent = `Feels Like\n${
+    Math.round((temp - 273.15) * 100) / 100
+  } °C`;
+  pressureElement.textContent = `Pressure\n${Math.round(
+    (pressure * 0.1 * 100) / 100
+  )} kPa`;
+  humidityElement.textContent = `Humidity\n${humidity}%`;
+  windSpeedElement.textContent = `Wind Speed\n${windSpeed} m/s`;
 }
 
 async function inputDataIntoDOM() {
   const weatherData = await getWeather();
   mainDOM(
-    weatherData.name,
-    weatherData.weather[0].main,
-    weatherData.weather[0].icon,
-    weatherData.main.temp
+    weatherData.currentData.name,
+    weatherData.currentData.weather[0].main,
+    weatherData.currentData.dt,
+    weatherData.currentData.weather[0].icon,
+    weatherData.currentData.main.temp
   );
+  dailyDOM(weatherData.dailyData);
   advancedDOM(
-    weatherData.main.feels_like,
-    weatherData.main.pressure,
-    weatherData.main.humidity,
-    weatherData.wind.speed
+    weatherData.currentData.main.feels_like,
+    weatherData.currentData.main.pressure,
+    weatherData.currentData.main.humidity,
+    weatherData.currentData.wind.speed
   );
   document.getElementById("locationInput").value = ""; // Reset input form
 }
 
 const eventListener = () => {
   const enterButton = document.getElementById("enterLocationInput");
-  const middle = document.querySelector(".middle");
   enterButton.addEventListener("click", inputDataIntoDOM);
-  middle.style.display = "none"; // Can't afford API key that forecasts daily sadge
+  window.addEventListener("load", inputDataIntoDOM);
 };
 
 export default eventListener;

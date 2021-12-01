@@ -8,15 +8,23 @@ function getApiKey() {
   return apiKey;
 }
 
-function getApiCall() {
-  const apiCall = `https://api.openweathermap.org/data/2.5/weather?q=${getCityName()}&appid=${getApiKey()}`;
+function getApiCall(lat, lon) {
+  const apiCall = [
+    `https://api.openweathermap.org/data/2.5/weather?q=${getCityName()}&appid=${getApiKey()}`,
+    `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=minutely,hourly,alerts&appid=${getApiKey()}`,
+  ];
   return apiCall;
 }
 
 async function getWeather() {
-  const response = await fetch(getApiCall(), { mode: "cors" });
-  const weatherData = await response.json();
-  return weatherData;
+  const response1 = await fetch(getApiCall()[0], { mode: "cors" });
+  const currentData = await response1.json();
+  const response2 = await fetch(
+    getApiCall(currentData.coord.lat, currentData.coord.lon)[1],
+    { mode: "cors" }
+  );
+  const dailyData = await response2.json();
+  return { currentData, dailyData };
 }
 
 export default getWeather;

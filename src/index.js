@@ -7,7 +7,7 @@ const initialise = (() => {
   const body = document.querySelector("body");
   body.style.backgroundImage = `url(${backgroundImage})`;
 
-  eventListener();
+  document.getElementById("locationInput").value = "Malaysia";
 
-  // Initialise a function that will automaticall show weather on user's location
+  eventListener();
 })();
